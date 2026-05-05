@@ -216,6 +216,42 @@
         </div>
     </div>
 
+    {{-- Global Toast Notification --}}
+<div
+    x-data="{ show: false, pesan: '', type: 'success' }"
+    x-on:show-toast.window="
+        pesan = $event.detail.pesan;
+        type  = $event.detail.type || 'success';
+        show  = true;
+        setTimeout(() => show = false, 3000)
+    "
+    x-show="show"
+    x-cloak
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 translate-y-4"
+    x-transition:enter-end="opacity-100 translate-y-0"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100 translate-y-0"
+    x-transition:leave-end="opacity-0 translate-y-4"
+    class="fixed bottom-4 right-4 z-50"
+>
+    <div :class="{
+            'bg-green-500': type === 'success',
+            'bg-red-500':   type === 'error',
+            'bg-yellow-500': type === 'warning',
+            'bg-blue-500':  type === 'info'
+         }"
+         class="flex items-center gap-2 px-4 py-3 rounded-xl text-white text-sm font-medium shadow-lg min-w-[200px]">
+        <svg x-show="type === 'success'" class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+        <svg x-show="type === 'error'" class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+        <span x-text="pesan"></span>
+    </div>
+</div>
+
     @stack('scripts')
 </body>
 </html>
